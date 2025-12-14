@@ -53,14 +53,18 @@ router.put("/me", authMiddleware, updateProfile);
 // ✅ PROTECTED ROUTE
 router.get("/me", authMiddleware, async (req, res) => {
   try {
+    console.log("📋 GET /auth/me - userId from token:", req.userId);
     const user = await User.findById(req.userId).select("-password");
 
     if (!user) {
+      console.log("❌ User not found for userId:", req.userId);
       return res.status(404).json({ message: "User not found" });
     }
 
+    console.log("✅ Returning user:", user.email);
     res.json({ user });
   } catch (err) {
+    console.error("❌ Error fetching user:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
