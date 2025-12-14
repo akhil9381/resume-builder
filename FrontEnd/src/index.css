@@ -1,0 +1,79 @@
+@import "tailwindcss";
+html {
+  scroll-behavior: smooth;
+}
+
+/* IMPORTANT: Remove all old Vite boilerplate CSS */
+html, body {
+  padding: 0;
+  margin: 0;
+}
+@media print {
+  body {
+    background: white !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
+/* html.neon {
+  background: #0F0F17;
+  color: white;
+}
+
+html.light {
+  background: #f8fafc;
+  color: #0f172a;
+} */
+/* ---------- THEME VARIABLES ---------- */
+
+/* =========================
+   THEME VARIABLES
+========================= */
+
+.theme-neon {
+  --bg: #0f0f17;
+  --card-bg: rgba(255, 255, 255, 0.06);
+  --text-main: #ffffff;
+  --text-muted: #cbd5f5;
+  --border: rgba(255, 255, 255, 0.12);
+}
+
+.theme-light {
+  --bg: #f8fafc;
+  --card-bg: #ffffff;
+  --text-main: #0f172a;   /* DARK TEXT */
+  --text-muted: #475569; /* SLATE-600 */
+  --border: #e2e8f0;
+}
+
+/* ---------- GLOBAL APPLICATION ---------- */
+
+.theme-neon {
+  background-color: var(--bg);
+  color: var(--text-main);
+}
+
+.theme-light {
+  background-color: var(--bg);
+  color: var(--text-main);
+}
+/* =========================
+   GLOBAL THEME BASE
+========================= */
+
+body {
+  background-color: var(--bg);
+  color: var(--text-main);
+}
+
+input,
+textarea,
+select {
+  color: var(--text-main);
+}
+
+::placeholder {
+  color: var(--text-muted);
+}
