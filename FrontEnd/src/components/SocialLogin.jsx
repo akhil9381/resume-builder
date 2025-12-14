@@ -12,7 +12,7 @@ export default function SocialLogin() {
       icon: <FcGoogle size={26} />,
       label: "Google",
       onClick: () => {
-  window.location.href = "http://localhost:5000/api/auth/google";
+  window.location.href = "https://resume-builder-oopi.onrender.com/api/auth/google";
     }},
     {
       icon: <FaFacebook size={26} className="text-blue-500" />,
