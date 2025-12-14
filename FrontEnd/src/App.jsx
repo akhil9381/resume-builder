@@ -11,6 +11,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { useTheme } from "./store/themeContext";
 import PublicRoute from "./routes/PublicRoute";
 import Profile from "./pages/Profile";
+import OAuthSuccess from "./pages/OAuthSuccess";
+
 export default function App() {
   const { theme } = useTheme();
 
@@ -24,6 +26,7 @@ export default function App() {
 
       <div className="flex-1 pt-16">
         <Routes>
+          <Route path="/oauth-success" element={<OAuthSuccess />} />
           <Route path="/" element={<Home />} />
           <Route
   path="/login"
