@@ -1,9 +1,14 @@
 import axios from "axios";
 
+// Use env variable or fallback to hardcoded backend URL
+const backendURL = import.meta.env.VITE_BACKEND_URL || "https://resume-builder-oopi.onrender.com";
+
 const api = axios.create({
-  baseURL: "https://resume-builder-oopi.onrender.com",
+  baseURL: backendURL,
   withCredentials: false,
 });
+
+console.log("API baseURL configured to:", backendURL);
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
