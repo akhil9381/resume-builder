@@ -24,7 +24,7 @@ export default function ResumeEditor() {
   useEffect(() => {
   if (id === "new") return;
 
-  api.get(`/resumes/${id}`).then((res) => {
+  api.get(`/api/resumes/${id}`).then((res) => {
     setResume({
       ...res.data.data,
       title: res.data.title,
@@ -43,7 +43,7 @@ export default function ResumeEditor() {
   if (saveTimer.current) clearTimeout(saveTimer.current);
 
   saveTimer.current = setTimeout(() => {
-    api.put(`/resumes/${id}`, {
+    api.put(`/api/resumes/${id}`, {
       title: resume.title || "Untitled Resume",
       template: resume.template,
       data: resume,
@@ -179,7 +179,7 @@ const saveResume = async () => {
 
     // 🟢 CREATE FIRST TIME
     if (id === "new") {
-      const res = await api.post("/resumes", {
+      const res = await api.post("/api/resumes", {
         title: resume.title || "Untitled Resume",
         template: resume.template,
         data: resume,
@@ -191,7 +191,7 @@ const saveResume = async () => {
     }
 
     // 🟢 UPDATE EXISTING
-    await api.put(`/resumes/${id}`, {
+    await api.put(`/api/resumes/${id}`, {
       title: resume.title,
       template: resume.template,
       data: resume,

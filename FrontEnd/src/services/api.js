@@ -18,7 +18,7 @@ api.interceptors.request.use((config) => {
 });
 
 export const fetchResumes = () => {
-  return api.get("/resumes");
+  return api.get("/api/resumes");
 };
 export const fetchProfile = () => api.get("/api/auth/me");
 
