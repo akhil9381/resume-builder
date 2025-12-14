@@ -8,17 +8,17 @@ import {
 
 const router = express.Router();
 
-// Check if OpenAI API is configured
-const hasOpenAI = () => !!process.env.OPENAI_API_KEY;
+// Check if Gemini API is configured
+const hasAI = () => !!process.env.GOOGLE_GENERATIVE_AI_KEY;
 
 // 🤖 Generate content suggestions
 router.post("/suggest-content", authMiddleware, async (req, res) => {
   try {
-    if (!hasOpenAI()) {
+    if (!hasAI()) {
       return res.status(503).json({
         success: false,
         error: "AI service not available",
-        message: "OpenAI API key not configured",
+        message: "Google Generative AI API key not configured",
       });
     }
 
@@ -49,11 +49,11 @@ router.post("/suggest-content", authMiddleware, async (req, res) => {
 // 📊 Analyze ATS compatibility
 router.post("/ats-score", authMiddleware, async (req, res) => {
   try {
-    if (!hasOpenAI()) {
+    if (!hasAI()) {
       return res.status(503).json({
         success: false,
         error: "AI service not available",
-        message: "OpenAI API key not configured",
+        message: "Google Generative AI API key not configured",
       });
     }
 
@@ -84,11 +84,11 @@ router.post("/ats-score", authMiddleware, async (req, res) => {
 // 🎯 Match job description
 router.post("/job-match", authMiddleware, async (req, res) => {
   try {
-    if (!hasOpenAI()) {
+    if (!hasAI()) {
       return res.status(503).json({
         success: false,
         error: "AI service not available",
-        message: "OpenAI API key not configured",
+        message: "Google Generative AI API key not configured",
       });
     }
 

@@ -1,29 +1,23 @@
-import OpenAI from "openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
 // 🤖 Generate AI suggestions for resume content
 export const generateContentSuggestions = async (role, currentText) => {
   try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are an expert resume writer. Generate 3-5 impactful bullet points for a resume section.",
-        },
-        {
-          role: "user",
-          content: `Generate professional bullet points for a ${role} role. Current text: "${currentText}". Provide 3-5 bullet points that are concise, action-oriented, and quantifiable where possible.`,
-        },
-      ],
-      temperature: 0.7,
-    });
+    const prompt = `You are an expert resume writer. Generate 3-5 impactful bullet points for a resume section.
 
-    const suggestions = response.choices[0].message.content
+Role: ${role}
+Current text: "${currentText}"
+
+Provide 3-5 bullet points that are concise, action-oriented, and quantifiable where possible. Return only the bullet points, one per line, starting with a dash.`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    const suggestions = text
       .split("\n")
       .filter((line) => line.trim())
       .map((line) => line.replace(/^[-•*]\s+/, "").trim());
@@ -44,32 +38,34 @@ export const generateContentSuggestions = async (role, currentText) => {
 // 📊 Analyze resume for ATS compatibility
 export const analyzeATS = async (resumeText) => {
   try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are an ATS (Applicant Tracking System) expert. Analyze resumes for ATS compatibility.",
-        },
-        {
-          role: "user",
-          content: `Analyze this resume for ATS compatibility and provide a JSON response with: { score: (0-100), issues: [...], suggestions: [...], keywordDensity: {...} }. Resume: ${resumeText}`,
-        },
-      ],
-      temperature: 0.7,
-    });
+    const prompt = `You are an ATS (Applicant Tracking System) expert. Analyze this resume for ATS compatibility.
 
-    const analysisText = response.choices[0].message.content;
-    
+Resume: ${resumeText}
+
+Provide a JSON response with:
+{
+  "score": <0-100>,
+  "issues": ["issue1", "issue2"],
+  "suggestions": ["suggestion1", "suggestion2"],
+  "keywordDensity": {}
+}
+
+Return ONLY valid JSON, no other text.`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const analysisText = response.text();
+
     // Try to parse JSON from response
     const jsonMatch = analysisText.match(/\{[\s\S]*\}/);
-    const analysis = jsonMatch ? JSON.parse(jsonMatch[0]) : {
-      score: 75,
-      issues: ["Could not parse detailed analysis"],
-      suggestions: ["Add more specific keywords", "Use standard formatting"],
-      keywordDensity: {},
-    };
+    const analysis = jsonMatch
+      ? JSON.parse(jsonMatch[0])
+      : {
+          score: 75,
+          issues: ["Could not parse detailed analysis"],
+          suggestions: ["Add more specific keywords", "Use standard formatting"],
+          keywordDensity: {},
+        };
 
     return {
       success: true,
@@ -87,36 +83,36 @@ export const analyzeATS = async (resumeText) => {
 // 🎯 Match resume against job description
 export const matchJobDescription = async (resumeText, jobDescription) => {
   try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are a job matching expert. Analyze how well a resume matches a job description.",
-        },
-        {
-          role: "user",
-          content: `Compare this resume with the job description and provide a JSON response with: { matchScore: (0-100), missingKeywords: [...], presentKeywords: [...], recommendations: [...] }. 
-          
+    const prompt = `You are a job matching expert. Compare this resume with the job description and provide matching analysis.
+
 Resume: ${resumeText}
 
-Job Description: ${jobDescription}`,
-        },
-      ],
-      temperature: 0.7,
-    });
+Job Description: ${jobDescription}
 
-    const matchText = response.choices[0].message.content;
-    
+Provide a JSON response with:
+{
+  "matchScore": <0-100>,
+  "missingKeywords": ["keyword1", "keyword2"],
+  "presentKeywords": ["keyword1", "keyword2"],
+  "recommendations": ["recommendation1", "recommendation2"]
+}
+
+Return ONLY valid JSON, no other text.`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const matchText = response.text();
+
     // Try to parse JSON from response
     const jsonMatch = matchText.match(/\{[\s\S]*\}/);
-    const matching = jsonMatch ? JSON.parse(jsonMatch[0]) : {
-      matchScore: 70,
-      missingKeywords: [],
-      presentKeywords: [],
-      recommendations: ["Add relevant skills from job description"],
-    };
+    const matching = jsonMatch
+      ? JSON.parse(jsonMatch[0])
+      : {
+          matchScore: 70,
+          missingKeywords: [],
+          presentKeywords: [],
+          recommendations: ["Add relevant skills from job description"],
+        };
 
     return {
       success: true,
