@@ -3,6 +3,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import errorMiddleware from "./middleware/error.middleware.js";
 import resumeRoutes from "./routes/resume.routes.js";
+import aiRoutes from "./routes/ai.routes.js";
 import passport from "passport";
 import "./config/passport.js";
 
@@ -50,6 +51,9 @@ app.use("/api/auth", authRoutes);
 
 // Resume routes
 app.use("/api/resumes", resumeRoutes);
+
+// AI routes (suggestions, ATS score, job matching)
+app.use("/api/ai", aiRoutes);
 
 // Error middleware (must be last)
 app.use(errorMiddleware);

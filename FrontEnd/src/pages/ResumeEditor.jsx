@@ -6,6 +6,9 @@ import { EMPTY_RESUME } from "../schema/resumeSchema";
 import { useSearchParams, useNavigate,useParams } from "react-router-dom";
 import TemplateRenderer from "../components/TemplateRenderer";
 import api from "../services/api";
+import SuggestionPanel from "../components/SuggestionPanel";
+import ATSScanner from "../components/ATSScanner";
+import JobMatcher from "../components/JobMatcher";
 export default function ResumeEditor() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -833,6 +836,26 @@ const addCustomBullet = (si) => {
     + Add New Section
   </button>
 </Section>
+
+{/* AI FEATURES */}
+<div className="border-t border-[var(--border)] pt-6 mt-6">
+  <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">🤖 AI Tools</h2>
+  
+  {/* Suggestions Panel */}
+  <SuggestionPanel 
+    role={resume.headline || "Professional"}
+    currentText={resume.summary}
+    onSelect={(suggestion) => {
+      setResume(p => ({ ...p, summary: (p.summary + "\n" + suggestion).trim() }));
+    }}
+  />
+  
+  {/* ATS Scanner */}
+  <ATSScanner resumeText={JSON.stringify(resume)} />
+  
+  {/* Job Matcher */}
+  <JobMatcher resumeText={JSON.stringify(resume)} />
+</div>
 
       </div>
       
