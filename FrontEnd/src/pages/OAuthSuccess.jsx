@@ -19,8 +19,10 @@ export default function OAuthSuccess() {
     localStorage.setItem("token", token);
 
     // fetch /auth/me via AuthContext restore logic
-    window.location.href = "/dashboard";
+    navigate("/dashboard",{replace:true});
   }, []);
 
-  return null;
+  return(
+    <div className="min-h-screen flex items-center justify-center text-lg">Signing you in...</div>
+  )
 }
