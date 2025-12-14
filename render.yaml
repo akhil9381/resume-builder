@@ -2,13 +2,15 @@ services:
   - type: web
     name: resume-builder-frontend
     env: node
-    buildCommand: cd FrontEnd && npm install && npm run build
-    startCommand: cd FrontEnd && npm start
+    buildCommand: cd FrontEnd && pnpm install && pnpm run build
+    startCommand: cd FrontEnd && pnpm start
     envVars:
       - key: VITE_BACKEND_URL
         value: https://resume-builder-oopi.onrender.com
         scope: build
       - key: PORT
         value: 3000
+
+
 
 
