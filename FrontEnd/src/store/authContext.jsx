@@ -39,7 +39,7 @@ export function AuthProvider({ children }) {
   ========================= */
   const login = async (email, password) => {
     try {
-      const res = await api.post("/auth/login", {
+      const res = await api.post("/api/auth/login", {
         email,
         password,
       });
@@ -55,7 +55,7 @@ export function AuthProvider({ children }) {
     }
   };
   const socialLogin = async (provider, accessToken) => {
-  const res = await api.post("/auth/social", {
+  const res = await api.post("/api/auth/social", {
     provider,
     accessToken,
   });
@@ -71,7 +71,7 @@ export function AuthProvider({ children }) {
   ========================= */
   const register = async (name, email, password) => {
     try {
-      const res = await api.post("/auth/register", {
+      const res = await api.post("/api/auth/register", {
         name,
         email,
         password,
