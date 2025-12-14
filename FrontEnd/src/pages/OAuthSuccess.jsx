@@ -15,14 +15,25 @@ export default function OAuthSuccess() {
       return;
     }
 
-    // save token + restore user
+    // save token
     localStorage.setItem("token", token);
 
-    // fetch /auth/me via AuthContext restore logic
-    navigate("/dashboard",{replace:true});
-  }, []);
+    // Call login to restore user context
+    try {
+      login(token);
+    } catch (err) {
+      console.error("Failed to restore session:", err);
+    }
 
-  return(
+    // navigate after a short delay to ensure context updates
+    const timer = setTimeout(() => {
+      navigate("/dashboard", { replace: true });
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [navigate, login]);
+
+  return (
     <div className="min-h-screen flex items-center justify-center text-lg">Signing you in...</div>
-  )
+  );
 }

@@ -7,13 +7,25 @@ import { useAuth } from "../store/authContext";
 export default function SocialLogin() {
   const { socialLogin } = useAuth();
 
+  // Get backend URL from env or construct from current domain
+  const getBackendUrl = () => {
+    if (import.meta.env.VITE_BACKEND_URL) {
+      return import.meta.env.VITE_BACKEND_URL;
+    }
+    // For deployed version, use same origin or fallback
+    return window.location.origin.replace(/frontend|vercel\.app/, 'onrender.com') || 'https://resume-builder-oopi.onrender.com';
+  };
+
+  const backendUrl = getBackendUrl();
+
   const buttons = [
     {
       icon: <FcGoogle size={26} />,
       label: "Google",
       onClick: () => {
-  window.location.href = "https://resume-builder-oopi.onrender.com/api/auth/google";
-    }},
+        window.location.href = `${backendUrl}/api/auth/google`;
+      },
+    },
     {
       icon: <FaFacebook size={26} className="text-blue-500" />,
       label: "Facebook",
