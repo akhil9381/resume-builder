@@ -18,20 +18,14 @@ export default function OAuthSuccess() {
     // save token
     localStorage.setItem("token", token);
 
-    // Call login to restore user context
-    try {
-      login(token);
-    } catch (err) {
-      console.error("Failed to restore session:", err);
-    }
-
-    // navigate after a short delay to ensure context updates
+    // Do not call `login(token)` here — the AuthProvider restores session from localStorage
+    // navigate after a short delay to allow AuthProvider restore effect to run
     const timer = setTimeout(() => {
       navigate("/dashboard", { replace: true });
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [navigate, login]);
+  }, [navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center text-lg">Signing you in...</div>
