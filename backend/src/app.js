@@ -14,8 +14,10 @@ app.use(passport.initialize());
 // CORS config - allow both localhost and deployed frontend
 const corsOrigins = [
   "http://localhost:5173",
+  "http://localhost:3000",
   process.env.CLIENT_URL,
-  "https://resume-builder-1-u4k3.onrender.com" // Your actual frontend domain
+  "https://resume-builder-1-u4k3.onrender.com", // Old frontend domain for backwards compatibility
+  "https://resume-builder-1-dd24.onrender.com", // Current frontend domain
 ].filter(Boolean);
 
 app.use(
