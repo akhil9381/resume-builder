@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { matchJob } from "../../services/aiService";
+import { matchJob } from "../services/aiService";
 
 export default function JobMatcher({ resumeText }) {
   const [jobDesc, setJobDesc] = useState("");

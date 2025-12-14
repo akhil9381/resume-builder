@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getSuggestions } from "../../services/aiService";
+import { getSuggestions } from "../services/aiService";
 
 export default function SuggestionPanel({ role, currentText, onSelect }) {
   const [suggestions, setSuggestions] = useState([]);

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { analyzeATSScore } from "../../services/aiService";
+import { analyzeATSScore } from "../services/aiService";
 
 export default function ATSScanner({ resumeText }) {
   const [analysis, setAnalysis] = useState(null);
