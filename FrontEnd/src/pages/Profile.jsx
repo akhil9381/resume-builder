@@ -15,7 +15,7 @@ export default function Profile() {
   const save = async () => {
     try {
       setLoading(true);
-      const res = await api.put("/auth/me", { name });
+      const res = await api.put("/api/auth/me", { name });
       setMsg("Profile updated successfully");
     } catch {
       setMsg("Update failed");

@@ -20,6 +20,6 @@ api.interceptors.request.use((config) => {
 export const fetchResumes = () => {
   return api.get("/resumes");
 };
-export const fetchProfile = () => api.get("/auth/me");
+export const fetchProfile = () => api.get("/api/auth/me");
 
 export default api;

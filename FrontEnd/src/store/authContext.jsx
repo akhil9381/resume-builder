@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
     }
 
     api
-      .get("/auth/me", {
+      .get("/api/auth/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
