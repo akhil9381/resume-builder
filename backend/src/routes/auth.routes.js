@@ -10,6 +10,11 @@ import User from "../models/User.js"; // <-- ensure filename matches
 const router = express.Router();
 router.get(
   "/google",
+  (req, res, next) => {
+    // Debug log
+    console.log("🔵 Google OAuth request - CLIENT_ID:", !!process.env.GOOGLE_CLIENT_ID);
+    next();
+  },
   passport.authenticate("google", {
     scope: ["profile", "email"],
   })
@@ -17,14 +22,30 @@ router.get(
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", { session: false }),
+  passport.authenticate("google", { session: false, failureRedirect: "/api/auth/google/failure" }),
   (req, res) => {
-    const token = signToken(req.user._id);
-
-    // redirect to frontend
-    res.redirect(`${process.env.CLIENT_URL}/oauth-success?token=${token}`);
+    try {
+      console.log("✅ Google callback - user authenticated:", req.user?.email);
+      const token = signToken(req.user._id);
+      
+      // Redirect to frontend with token
+      const redirectUrl = `${process.env.CLIENT_URL}/oauth-success?token=${token}`;
+      console.log("📤 Redirecting to:", redirectUrl);
+      res.redirect(redirectUrl);
+    } catch (err) {
+      console.error("❌ Google callback error:", err);
+      res.status(500).json({ error: "Authentication failed" });
+    }
   }
 );
+
+// OAuth failure handler
+router.get("/google/failure", (req, res) => {
+  res.status(401).json({ 
+    error: "Google authentication failed",
+    message: "Failed to authenticate with Google"
+  });
+});
 router.post("/register", register);
 router.post("/login", login);
 router.post("/social", socialLogin);
