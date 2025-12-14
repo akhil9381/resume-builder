@@ -7,16 +7,8 @@ import { useAuth } from "../store/authContext";
 export default function SocialLogin() {
   const { socialLogin } = useAuth();
 
-  // Get backend URL from env or construct from current domain
-  const getBackendUrl = () => {
-    if (import.meta.env.VITE_BACKEND_URL) {
-      return import.meta.env.VITE_BACKEND_URL;
-    }
-    // For deployed version, use same origin or fallback
-    return window.location.origin.replace(/frontend|vercel\.app/, 'onrender.com') || 'https://resume-builder-oopi.onrender.com';
-  };
-
-  const backendUrl = getBackendUrl();
+  // Get backend URL - prefer env variable
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://resume-builder-oopi.onrender.com';
 
   const buttons = [
     {

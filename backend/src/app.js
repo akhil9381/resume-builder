@@ -7,6 +7,8 @@ import passport from "passport";
 import "./config/passport.js";
 
 const app = express();
+
+// Initialize passport BEFORE CORS
 app.use(passport.initialize());
 
 // CORS config - allow both localhost and deployed frontend
@@ -25,9 +27,28 @@ app.use(
 
 app.use(express.json());
 
+// ✅ HEALTH CHECK endpoint
+app.get("/", (req, res) => {
+  res.json({ message: "✅ Backend is running", timestamp: new Date() });
+});
+
+// ✅ API health check
+app.get("/api/health", (req, res) => {
+  res.json({ 
+    status: "ok", 
+    google_configured: !!process.env.GOOGLE_CLIENT_ID,
+    mongo_uri: !!process.env.MONGO_URI,
+    server_url: process.env.SERVER_URL,
+    client_url: process.env.CLIENT_URL
+  });
+});
+
+// Mount auth routes
 app.use("/api/auth", authRoutes);
 
-app.use(errorMiddleware);
-
+// Resume routes
 app.use("/api/resumes", resumeRoutes);
+
+// Error middleware (must be last)
+app.use(errorMiddleware);
 export default app;
