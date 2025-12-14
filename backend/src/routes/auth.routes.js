@@ -22,7 +22,7 @@ router.get(
     const token = signToken(req.user._id);
 
     // redirect to frontend
-    res.redirect(`http://localhost:5173/login?token=${token}`);
+    res.redirect(`${process.env.CLIENT_URL}/oauth-success?token=${token}`);
   }
 );
 router.post("/register", register);
