@@ -90,6 +90,21 @@ export function AuthProvider({ children }) {
   };
 
   /* =========================
+     ✅ UPDATE PROFILE
+  ========================= */
+  const updateProfile = async (name) => {
+    try {
+      const res = await api.put("/api/auth/me", { name });
+      setUser(res.data.user);
+      return res.data;
+    } catch (err) {
+      const message =
+        err.response?.data?.message || "Failed to update profile";
+      throw new Error(message);
+    }
+  };
+
+  /* =========================
      ✅ LOGOUT
   ========================= */
   const logout = () => {
@@ -105,6 +120,7 @@ export function AuthProvider({ children }) {
         register,
         logout,
         socialLogin,
+        updateProfile,
         loading,
       }}
     >

@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useAuth } from "../store/authContext";
-import api from "../services/api";
 
 export default function Profile() {
-  const { user, logout } = useAuth();
+  const { user, logout, updateProfile } = useAuth();
   const [name, setName] = useState(user?.name || "");
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,10 +14,11 @@ export default function Profile() {
   const save = async () => {
     try {
       setLoading(true);
-      const res = await api.put("/api/auth/me", { name });
+      await updateProfile(name);
       setMsg("Profile updated successfully");
-    } catch {
-      setMsg("Update failed");
+      setTimeout(() => setMsg(""), 3000);
+    } catch (err) {
+      setMsg(err.message || "Update failed");
     } finally {
       setLoading(false);
     }
